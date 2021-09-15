@@ -70,3 +70,11 @@ exports.userDelete = (req, res) => {
     });
 }
 
+exports.userInfos = (req, res) => {
+    const { id } = req.params
+    User.findOne({ _id: id }).then((user) => {
+        if(user) {
+            return res.status(200).json(user.login)
+        }
+    })
+}
