@@ -21,7 +21,7 @@ exports.userRegister = (req, res) => {
             return res.status(409).send('Login already exist, please choose another one');
         } else {
             // if not, we create a new user with bcrypt password
-            
+
             const hash = bcrypt.hashSync(password, saltRounds);
             const newUser = new User({
                 login: login,
@@ -34,6 +34,24 @@ exports.userRegister = (req, res) => {
 
 }
 
+
+exports.userLogin = (req, res) => {
+    const { login, password } = req.body;
+    
+    User.findOne({login : login}).then((user) => {
+        if(user) {
+            bcrypt.compare(password, user.password, (err, result) =>{
+                if (result) {
+                    return res.status(200).send('You are now connected')
+                } else {
+                    return res.status(400).send('Incorrect password')
+                }
+            })
+        }
+    })
+    
+}
+
 exports.userDelete = (req, res) => {
     const { id } = req.body
     User.findOneAndRemove({ _id: id }, (err, result) => {
@@ -42,10 +60,6 @@ exports.userDelete = (req, res) => {
     });
 }
 
-exports.userLogin = (req, res) => {
-  
-}
-
 exports.userLogout = (req, res, next) => {
-   
+    
 }
