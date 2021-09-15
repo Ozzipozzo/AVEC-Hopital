@@ -12,7 +12,7 @@ app.use(express.json());
 
 
 // Routes
-app.use('/api/auth', require('./Router/userRoutes'));
+app.use('/api', require('./Router/userRoutes'));
 
 
 // Server to listen
