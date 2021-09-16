@@ -22,8 +22,8 @@ NodesJS, Express
 
 ## API DOCS
 
-![API docs]https://github.com/Ozzipozzo/AVEC-Hopital/blob/master/assets/API/1.png
-![API docs]https://github.com/Ozzipozzo/AVEC-Hopital/blob/master/assets/API/2.png
-![API docs]https://github.com/Ozzipozzo/AVEC-Hopital/blob/master/assets/API/3.png
+![API docs]https://imgur.com/UamgELn
+![API docs]https://imgur.com/KsdpsQu
+![API docs]https://imgur.com/mF8x6qU
 
 
