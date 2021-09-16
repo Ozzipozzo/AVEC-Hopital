@@ -65,6 +65,6 @@ exports.unassignUserBed = (req, res) => {
 
     Bed.findOneAndUpdate({ user : userBed}, { start: null, stop: null, available: true, user: null}, {new: true})
         .then((result) => {
-            return res.status(200).json(`le lit + ${result.bed} à l'étage ${result.floor} est de nouveau disponible`)
+            return res.status(200).json(`le lit ${result.bed} à l'étage ${result.floor} est de nouveau disponible`)
         })
 }
