@@ -68,3 +68,14 @@ exports.unassignUserBed = (req, res) => {
             return res.status(200).json(`le lit ${result.bed} à l'étage ${result.floor} est de nouveau disponible`)
         })
 }
+
+exports.searchBedByFloor = (req, res) => {
+
+    const { floor } = req.params;
+
+    Bed.find({floor : floor, available: true})
+    .then((result) => {
+        return res.status(200).json({result})
+    })
+
+}
