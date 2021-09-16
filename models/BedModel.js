@@ -13,13 +13,16 @@ const BedSchema = new mongoose.Schema({
         type: Boolean
     },
     start: {
-        type: Date
+        type: Date,
+        default: null
     },
     stop:{
-        type: Date
+        type: Date,
+        default: null
     },
-    userId: {
-        type: String
+    user: {
+        type: String,
+        default: null
     }
 })
 
