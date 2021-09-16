@@ -11,7 +11,7 @@ app.use(express.json());
 
 
 // Routes
-app.use('/api', require('./Router/userRoutes'));
+app.use('/api/user', require('./Router/userRoutes'));
 app.use('/api/room', require('./Router/bedRoutes'));
 
 

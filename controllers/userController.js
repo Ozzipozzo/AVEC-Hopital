@@ -3,9 +3,6 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const User = require('../models/UserModel');
 const jwt = require('jsonwebtoken');
-const { authenticate } = require('passport');
-
-
 
 
 exports.userRegister = (req, res) => {
@@ -42,9 +39,6 @@ exports.userLogin = (req, res) => {
     User.findOne({ login }).then((user) => {
         if (user) {
             bcrypt.compare(password, user.password, (err, result) => {
-                // if(err) {
-                //     return res.status(500).send(err)
-                // }
                 if (result) {
                     console.log(user)
                     var token = jwt.sign({user}, 'AVEC', { expiresIn: '1h' });
@@ -71,17 +65,21 @@ exports.userUpdate = (req, res) => {
 }
 
 exports.userDelete = (req, res) => {
-    const { id } = req.body
-    User.findOneAndRemove({ _id: id }, (err, result) => {
+
+    const userToken = req.headers['x-auth-token'];
+    const userInfo = jwt.verify(userToken, 'AVEC');
+
+    User.findOneAndRemove({ _id: userInfo.user._id }, (err, result) => {
         if (err) throw new Error(err);
         res.status(200).send('User supprimé');
     });
 }
 
 exports.userInfos = (req, res) => {
+
     const userToken = req.headers['x-auth-token'];
     const userInfo = jwt.verify(userToken, 'AVEC');
-    // console.log(userInfo);
+
     if(userInfo) {
         User.findOne({ _id: userInfo.user._id })
         .then((user) => {
