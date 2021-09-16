@@ -45,7 +45,7 @@ exports.assignUserBed = (req, res) => {
                 let userIn = moment(result.start).subtract(10, 'days').calendar();
                 let userOut = moment(result.stop).subtract(10, 'days').calendar();
 
-                return res.status(200).json(`Vous avez reservé le lit n° ${result.bed} à l'étage ${result.floor} du ${userIn} au ${userOut}`)
+                return res.status(200).send(`Vous avez reservé le lit n° ${result.bed} à l'étage ${result.floor} du ${userIn} au ${userOut}`)
             })
         } else {
             return res.status(404).send(" Merci de renseigner tous les champs")
@@ -62,7 +62,7 @@ exports.unassignUserBed = (req, res) => {
 
     Bed.findOneAndUpdate({ user : userBed}, { start: null, stop: null, available: true, user: null}, {new: true})
         .then((result) => {
-            return res.status(200).json(`le lit ${result.bed} à l'étage ${result.floor} est de nouveau disponible`)
+            return res.status(200).send(`le lit ${result.bed} à l'étage ${result.floor} est de nouveau disponible`)
         })
 }
 

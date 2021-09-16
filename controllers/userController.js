@@ -57,10 +57,9 @@ exports.userUpdate = (req, res) => {
     if(req.body.password) {
         req.body.password = bcrypt.hashSync(req.body.password, saltRounds);
     }
-    console.log(req.body.login)
     User.findOneAndUpdate({ _id : id }, req.body, { new: true }, (err, result) => {
         if (err) throw new Error(err);
-        console.log(result)
+        return res.status(200).send('Update succesfull !')
     })
 }
 
@@ -71,7 +70,7 @@ exports.userDelete = (req, res) => {
 
     User.findOneAndRemove({ _id: userInfo.user._id }, (err, result) => {
         if (err) throw new Error(err);
-        res.status(200).send('User supprimé');
+        res.status(200).send('User account deleted with success');
     });
 }
 
