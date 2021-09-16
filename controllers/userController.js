@@ -2,6 +2,9 @@ const app = require('express')();
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const User = require('../models/UserModel');
+const jwt = require('jsonwebtoken');
+const { authenticate } = require('passport');
+
 
 
 
@@ -36,11 +39,16 @@ exports.userRegister = (req, res) => {
 exports.userLogin = (req, res) => {
     const { login, password } = req.body;
 
-    User.findOne({ login: login }).then((user) => {
+    User.findOne({ login }).then((user) => {
         if (user) {
             bcrypt.compare(password, user.password, (err, result) => {
+                // if(err) {
+                //     return res.status(500).send(err)
+                // }
                 if (result) {
-                    return res.status(200).send('You are now connected')
+                    console.log(user)
+                    var token = jwt.sign({user}, 'AVEC', { expiresIn: '1h' });
+                    return res.status(200).json({token})
                 } else {
                     return res.status(400).send('Incorrect password')
                 }
@@ -71,10 +79,17 @@ exports.userDelete = (req, res) => {
 }
 
 exports.userInfos = (req, res) => {
-    const { id } = req.params
-    User.findOne({ _id: id }).then((user) => {
-        if(user) {
-            return res.status(200).json(user.login)
-        }
-    })
+    const userToken = req.headers['x-auth-token'];
+    const userInfo = jwt.verify(userToken, 'AVEC');
+    // console.log(userInfo);
+    if(userInfo) {
+        User.findOne({ _id: userInfo.user._id })
+        .then((user) => {
+            console.log(user)
+            return res.status(200).json({user :user.login, role: user.role})
+        })
+        .catch(e => {
+            return res.status(500).send()
+        })
+    }
 }

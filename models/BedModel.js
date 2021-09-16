@@ -19,6 +19,9 @@ const BedSchema = new mongoose.Schema({
     },
     stop:{
         type: Date
+    },
+    userId: {
+        type: String
     }
 })
 
