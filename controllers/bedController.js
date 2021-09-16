@@ -2,8 +2,6 @@ const Bed = require('../models/BedModel');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
 
-
-
 exports.createBed = (req, res) => {
 
     const { bed, floor, available, start, stop } = req.body;
@@ -44,13 +42,12 @@ exports.assignUserBed = (req, res) => {
             Bed.findOneAndUpdate({ _id: bedNumber }, { start, stop, available: false, user: userInfo.user._id }, { new: true })
             .then((result) => {
             
-                let userIn = moment(result.start).subtract(10, 'days').calendar();;
-                let userOut = moment(result.stop).subtract(10, 'days').calendar();;
+                let userIn = moment(result.start).subtract(10, 'days').calendar();
+                let userOut = moment(result.stop).subtract(10, 'days').calendar();
+
                 return res.status(200).json(`Vous avez reservé le lit n° ${result.bed} à l'étage ${result.floor} du ${userIn} au ${userOut}`)
             })
-    
         } else {
-
             return res.status(404).send(" Merci de renseigner tous les champs")
         }
 }
@@ -77,5 +74,21 @@ exports.searchBedByFloor = (req, res) => {
     .then((result) => {
         return res.status(200).json({result})
     })
+
+}
+
+exports.searchUserBed = (req, res) => {
+
+    const userToken = req.headers['x-auth-token'];
+    const userInfo = jwt.verify(userToken, 'AVEC');
+    const userBed = userInfo.user._id;
+
+    Bed.findOne({ user : userBed })
+        .then((result) => {
+            return res.status(200).json(`Votre lit porte le numéro: ${result.bed} à l'étage ${result.floor}`)
+        })
+        .catch(e => {
+            return res.status(409).send("Vous n'avez pas reservé de lit")
+        })
 
 }
