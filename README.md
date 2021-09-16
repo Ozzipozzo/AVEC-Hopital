@@ -2,13 +2,14 @@
 
 AVEC-Hôpital
 
-Petit projet de création de lit
+Petit projet de création de lit pour un test technique
 
-## Pour commencer
+## Installation 
 
 npm i
+npm install
 
-### Pré-requis
+### Dépendences
 
 bcrypt": "^5.0.1",
 "express": "^4.17.1",
@@ -16,7 +17,7 @@ bcrypt": "^5.0.1",
 "moment": "^2.29.1",
 "mongoose": "^6.0.5",
 
-## Fabriqué avec
+## Languages/Frameworks utilisés.
 
 NodesJS, Express
 
