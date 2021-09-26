@@ -6,8 +6,11 @@ Petit projet de création de lit pour un test technique
 
 ## Installation 
 
-npm i
+Git clone le projet
 npm install
+npm run dev (avec nodemon) ou,
+npm run start
+
 
 ### Dépendences
 
