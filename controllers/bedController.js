@@ -61,12 +61,16 @@ exports.assignUserBed = (req, res) => {
 
 exports.unassignUserBed = (req, res) => {
 
-    
+    // retrieving token inf
     const userToken = req.headers['x-auth-token'];
+    // verify token
     const userInfo = jwt.verify(userToken, 'AVEC');
+    // getting the user id from the bed
     const userBed = userInfo.user._id;
+    // storing the bed number
     const { bedNumber } = req.body;
 
+    // and then updating the bed, deleting the user id from it and make it available
     Bed.findOneAndUpdate({ user : userBed}, { start: null, stop: null, available: true, user: null}, {new: true})
         .then((result) => {
             return res.status(200).send(`le lit ${result.bed} à l'étage ${result.floor} est de nouveau disponible`)
@@ -75,8 +79,10 @@ exports.unassignUserBed = (req, res) => {
 
 exports.searchBedByFloor = (req, res) => {
 
+    // getting the floor for the research
     const { floor } = req.params;
 
+    // sending the result of all available beds
     Bed.find({floor : floor, available: true})
     .then((result) => {
         return res.status(200).json({result})
@@ -86,10 +92,12 @@ exports.searchBedByFloor = (req, res) => {
 
 exports.searchUserBed = (req, res) => {
 
+    // getting user infos
     const userToken = req.headers['x-auth-token'];
     const userInfo = jwt.verify(userToken, 'AVEC');
     const userBed = userInfo.user._id;
 
+    // finding the bed regarding the user info
     Bed.findOne({ user : userBed })
         .then((result) => {
             return res.status(200).json(`Votre lit porte le numéro: ${result.bed} à l'étage ${result.floor}`)
