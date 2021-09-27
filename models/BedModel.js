@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+
+// bed schema database
 const BedSchema = new mongoose.Schema({
     bed: {
         type: Number,

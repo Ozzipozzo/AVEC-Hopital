@@ -5,6 +5,7 @@ const User = require('../models/UserModel');
 const jwt = require('jsonwebtoken');
 
 
+// function to register user
 exports.userRegister = (req, res) => {
 
     //retrieving user info
@@ -33,11 +34,16 @@ exports.userRegister = (req, res) => {
     })
 }
 
+// function to check login from user
 exports.userLogin = (req, res) => {
+
+    // get info from the body
     const { login, password } = req.body;
 
+    // check if user already exist
     User.findOne({ login }).then((user) => {
         if (user) {
+            // compare password
             bcrypt.compare(password, user.password, (err, result) => {
                 if (result) {
                     console.log(user)
@@ -65,9 +71,13 @@ exports.userUpdate = (req, res) => {
 
 exports.userDelete = (req, res) => {
 
+    // getting user info from the token
     const userToken = req.headers['x-auth-token'];
+
+    // verifying the validity of the token
     const userInfo = jwt.verify(userToken, 'AVEC');
 
+    // finding the suer and deleting 
     User.findOneAndRemove({ _id: userInfo.user._id }, (err, result) => {
         if (err) throw new Error(err);
         res.status(200).send('User account deleted with success');
@@ -76,9 +86,12 @@ exports.userDelete = (req, res) => {
 
 exports.userInfos = (req, res) => {
 
+    // getting user info from the token
     const userToken = req.headers['x-auth-token'];
+    // verifying the token entry
     const userInfo = jwt.verify(userToken, 'AVEC');
 
+    // if we find the user we update informations
     if(userInfo) {
         User.findOne({ _id: userInfo.user._id })
         .then((user) => {

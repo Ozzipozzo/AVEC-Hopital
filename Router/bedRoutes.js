@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const bedController = require('../controllers/bedController');
 
+
+// bed router with the bedcontroller and methods
+
 router.get("/freebed", bedController.freeBedList);
 router.post("/create", bedController.createBed);
 router.post("/assign", bedController.assignUserBed);

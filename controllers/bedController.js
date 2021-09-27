@@ -4,9 +4,10 @@ const moment = require('moment');
 
 exports.createBed = (req, res) => {
 
+    // getting info from the front
     const { bed, floor, available, start, stop } = req.body;
-    console.log(req.body);
 
+    // creating the info from the front
     const newBed = new Bed({
         bed: bed,
         floor: floor,
@@ -15,12 +16,14 @@ exports.createBed = (req, res) => {
         stop: stop
     })
 
+    // saving bed into db
     newBed.save();
     return res.status(200).send(`bed number ${bed} created on the floor ${floor}`)
 }
 
 exports.freeBedList = (req, res) => {
 
+    // finding bed from boolean and returning the result
     Bed.find({ available: true }).then((result) => {
         console.log(result)
         return res.status(200).json({ result })
@@ -35,9 +38,12 @@ exports.assignUserBed = (req, res) => {
 
     const { bedNumber, start, stop } = req.body;
 
+    // checking user info
     const userToken = req.headers['x-auth-token'];
+    // checking passphrase
     const userInfo = jwt.verify(userToken, 'AVEC');
     
+    // checking entry info and making the best not empty with the user id
     if (bedNumber && start && stop) {
             Bed.findOneAndUpdate({ _id: bedNumber }, { start, stop, available: false, user: userInfo.user._id }, { new: true })
             .then((result) => {
@@ -55,6 +61,7 @@ exports.assignUserBed = (req, res) => {
 
 exports.unassignUserBed = (req, res) => {
 
+    
     const userToken = req.headers['x-auth-token'];
     const userInfo = jwt.verify(userToken, 'AVEC');
     const userBed = userInfo.user._id;
